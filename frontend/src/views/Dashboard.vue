@@ -2,37 +2,30 @@
   <div class="dashboard">
     <h1>Welcome to the ShoutOut</h1>
     <div class="tiles-container">
-      <!-- Birthday Tile -->
       <div class="tile birthday" @click="navigateTo('/birthdays')">
         <h2>Birthday Celebrations</h2>
         <p>Celebrate your colleagues' special day!</p>
       </div>
-      <!-- Work Anniversary Tile -->
       <div class="tile work-anniversary" @click="navigateTo('/workAnniversary')">
         <h2>Work Anniversaries</h2>
         <p>Mark and celebrate milestones together!</p>
       </div>
-      <!-- Peer Appreciation Tile -->
       <div class="tile peer-appreciation" @click="navigateTo('/peer2peerAppreciation')">
         <h2>Peer-to-Peer Appreciation</h2>
         <p>Express gratitude and uplift the team spirit!</p>
       </div>
-      <!-- Team Achievements Tile -->
       <div class="tile team-achievements" @click="navigateTo('/teamAchievements')">
         <h2>Team Achievements</h2>
         <p>Celebrate success and inspire more!</p>
       </div>
-      <!-- Festivals Tile -->
       <div class="tile festivals" @click="navigateTo('/festivals')">
         <h2>Festivals</h2>
         <p>Embrace cultural diversity and joy.</p>
       </div>
-      <!-- Team Parties Tile -->
       <div class="tile team-parties" @click="navigateTo('/teamParties')">
         <h2>Team Parties</h2>
         <p>Unwind and have fun together.</p>
       </div>
-      <!-- Official Events Tile -->
       <div class="tile official-events" @click="navigateTo('/officialEvents')">
         <h2>Official Events</h2>
         <p>Stay connected with organizational events.</p>
@@ -76,7 +69,7 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 250px; /* Fixed height for all tiles */
+  height: 250px; 
   width: 100%; 
   max-width: 300px;
   background-color: #f9f9f9;
@@ -99,7 +92,7 @@ h1 {
   font-size: 1.5rem;
   color: #222;
   margin-bottom: 10px;
-  height: 2rem; /* Consistent height for titles */
+  height: 2rem; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,7 +101,7 @@ h1 {
 .tile p {
   font-size: 1rem;
   color: #666;
-  height: 3rem; /* Consistent height for descriptions */
+  height: 3rem; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -159,7 +152,6 @@ h1 {
   background: linear-gradient(135deg, #607d8b, #9e9e9e);
 }
 
-/* Responsive adjustments */
 @media (max-width: 1200px) {
   .tiles-container {
     grid-template-columns: repeat(2, 1fr);

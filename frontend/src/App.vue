@@ -1,33 +1,58 @@
 <template>
-  <!-- <div>
-    {{ isLoggedIn }}
-  </div> -->
   <v-app>
-    <!-- <div v-if="isLoggedIn"> -->
-    <div>
-      <TopBar />
+    <LoginModal 
+      v-if="!isLoggedIn" 
+      @login-success="onLoginSuccess"
+    />
+    <template v-else>
+      <TopBar @logout="logout" />
       <Sidebar />
-    </div>
-    <v-main>
-      <router-view />
-    </v-main>
+      <v-main>
+        <router-view />
+      </v-main>
+    </template>
   </v-app>
 </template>
 
-<script>
-import { storeToRefs } from 'pinia';
-import Sidebar from './components/Sidebar.vue';
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import LoginModal from './components/LoginModal.vue';
 import TopBar from './components/TopBar.vue';
+import Sidebar from './components/Sidebar.vue';
 
-export default {
-  components: { Sidebar, TopBar },
+const router = useRouter();
+const isLoggedIn = ref(false);
+
+const checkUserLoginStatus = () => {
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  
+  if (userData && new Date().getTime() < userData.expirationTime) {
+    isLoggedIn.value = true;
+  } else {
+    isLoggedIn.value = false;
+  }
 };
+
+const onLoginSuccess = () => {
+  isLoggedIn.value = true;
+};
+
+const logout = () => {
+  localStorage.removeItem('userData');
+  localStorage.removeItem('avatarId');
+  isLoggedIn.value = false;
+  router.push('/login');
+};
+
+onMounted(() => {
+  checkUserLoginStatus();
+});
 </script>
 
 <style>
-html, body, #app {
-  margin: 0;
-  height: 100%;
-  font-family: 'Roboto', sans-serif;
+/* Prevent scrolling and add blur effect when not logged in */
+.v-application__wrap {
+  overflow: hidden;
 }
 </style>
