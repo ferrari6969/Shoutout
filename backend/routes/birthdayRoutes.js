@@ -73,10 +73,17 @@ router.put('/:id/comments/:commentId', async (req, res) => {
             return res.status(404).json({ message: 'Birthday not found!' });
         }
 
-        const comment = birthday.comments.id(commentId);
+        console.log('Birthday found:', birthday); // Log the entire birthday object
+        console.log('Comment ID:', commentId); // Log the provided commentId
+        console.log('Comments array:', birthday.comments); // Log the comments array
+
+        const comment = birthday.comments.find(comment => comment.commentId === commentId);
+
         if (!comment) {
             return res.status(404).json({ message: 'Comment not found!' });
         }
+
+        console.log('Comment found:', comment); // Log the comment that was fetched
 
         if (content) comment.content = content;
         if (author) comment.author = author;
@@ -88,6 +95,7 @@ router.put('/:id/comments/:commentId', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+
 
 router.get('/', async (req, res) => {
     try {

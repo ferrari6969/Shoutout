@@ -18,9 +18,10 @@ const BirthdayService = {
     return response.data;
 },
 
-  async editComment(bdId, commentId, content) {
+  async editComment(bdId, commentId, content, author) {
     const response = await axios.put(`${BASE_URL}/api/birthdays/${bdId}/comments/${commentId}`, {
       content,
+      author,
     });
     return response.data;
   },
