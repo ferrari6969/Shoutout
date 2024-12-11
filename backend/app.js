@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const birthdayRoutes = require('./routes/birthdayRoutes');
+const anniversaryRoutes = require('./routes/anniversaryRoutes')
 const cron = require('./cron');
 const cors = require('cors');
 
@@ -17,6 +18,7 @@ app.use(express.json());
 
 app.use('/api/users', userRoutes);
 app.use('/api/birthdays', birthdayRoutes);
+app.use('/api/anniversary', anniversaryRoutes)
 
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {
