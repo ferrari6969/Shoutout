@@ -50,5 +50,17 @@ router.put('/:userId/avatar', async (req, res) => {
     }
 });
 
+// Get all users
+router.get('/fetchUsers', async (req, res) => {
+    try {
+        const users = await User.find({}, { userId: 1, name: 1, _id: 0 }); // Fetch only userId and name
+        res.status(200).json(users);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
+
 
 module.exports = router;
