@@ -7,6 +7,8 @@ const birthdayRoutes = require('./routes/birthdayRoutes');
 const anniversaryRoutes = require('./routes/anniversaryRoutes')
 const appreciationRoutes = require('./routes/appreciationRoutes')
 const teamAchievementsRoutes = require('./routes/teamAchievementsRoutes')
+const festivalRoute = require('./routes/festivalRoute')
+const festival = require('./routes/festivalFrontendRoute')
 const cron = require('./cron');
 const cors = require('cors');
 
@@ -23,6 +25,8 @@ app.use('/api/birthdays', birthdayRoutes);
 app.use('/api/anniversary', anniversaryRoutes)
 app.use('/api/appreciation', appreciationRoutes)
 app.use('/api/teamAchievements', teamAchievementsRoutes)
+app.use('/api/festivals', festivalRoute)
+app.use('/api/festivalFront', festival)
 
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {

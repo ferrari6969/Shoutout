@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <v-btn color="primary" @click="showModal = true">Add Appreciation</v-btn>
+        <v-btn color="primary" @click="openAddModal">Add Appreciation</v-btn>
       </v-col>
     </v-row>
     <v-row>
@@ -12,13 +12,14 @@
           <v-card-subtitle>From: {{ app.fromUser }} | To: {{ app.toUser }}</v-card-subtitle>
           <v-card-text>{{ app.description }}</v-card-text>
           <v-card-actions v-if="app.fromUser === currentUser.userId">
-            <v-btn @click="editAppreciation(app)">Edit</v-btn>
+            <v-btn @click="openEditModal(app)">Edit</v-btn>
             <v-btn color="red" @click="deleteAppreciation(app._id)">Delete</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
 
+    <!-- Dialog for Add/Edit -->
     <v-dialog v-model="showModal" max-width="500">
       <v-card>
         <v-card-title>{{ isEditMode ? 'Edit Appreciation' : 'Add Appreciation' }}</v-card-title>
@@ -34,7 +35,7 @@
         </v-card-text>
         <v-card-actions>
           <v-btn color="primary" @click="saveAppreciation">{{ isEditMode ? 'Update' : 'Save' }}</v-btn>
-          <v-btn @click="showModal = false">Cancel</v-btn>
+          <v-btn @click="closeModal">Cancel</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -52,12 +53,7 @@ export default {
       users: [],
       showModal: false,
       isEditMode: false,
-      form: {
-        _id: "",
-        toUser: "",
-        title: "",
-        description: "",
-      },
+      form: this.resetForm(),
       currentUser: JSON.parse(localStorage.getItem('userData')).user,
     };
   },
@@ -68,18 +64,32 @@ export default {
     async fetchUsers() {
       this.users = await UserService.fetchUsers();
     },
-    async addAppreciation() {
-      const { toUser, title, description } = this.form;
-      const fromUser = this.currentUser.userId;
-      await AppreciationService.addAppreciation(fromUser, toUser, title, description);
-      this.showModal = false;
-      this.fetchAppreciations();
+
+    // Resets form to its initial state
+    resetForm() {
+      return {
+        _id: "",
+        toUser: "",
+        title: "",
+        description: "",
+      };
     },
-    async editAppreciation(app) {
-      this.isEditMode = true;
-      this.form = { ...app };
+
+    // Open modal for adding a new appreciation
+    openAddModal() {
+      this.form = this.resetForm();
+      this.isEditMode = false;
       this.showModal = true;
     },
+
+    // Open modal for editing an appreciation
+    openEditModal(app) {
+      this.form = { ...app };
+      this.isEditMode = true;
+      this.showModal = true;
+    },
+
+    // Save appreciation based on mode (Add/Edit)
     async saveAppreciation() {
       const { _id, toUser, title, description } = this.form;
       if (this.isEditMode) {
@@ -88,10 +98,17 @@ export default {
         const fromUser = this.currentUser.userId;
         await AppreciationService.addAppreciation(fromUser, toUser, title, description);
       }
-      this.showModal = false;
+      this.closeModal();
       this.fetchAppreciations();
+    },
+
+    // Close modal and reset form
+    closeModal() {
+      this.showModal = false;
+      this.form = this.resetForm();
       this.isEditMode = false;
     },
+
     async deleteAppreciation(id) {
       await AppreciationService.deleteAppreciation(id);
       this.fetchAppreciations();
