@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     dateOfBirth: { type: Date, required: true },
     dateOfJoining: { type: Date, required: true },
-    avatarId:{ type: String}
+    avatarId:{ type: String},
+    isAdmin: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model('User', userSchema);

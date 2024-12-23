@@ -1,7 +1,21 @@
 <template>
   <v-app-bar color="primary" elevation="2">
-    <v-app-bar-title>ShoutOut</v-app-bar-title>
+    <!-- ShoutOut Title (Navigates to Dashboard) -->
+    <v-btn text :to="{ path: '/Dashboard' }" class="shoutout-title-btn">
+      <v-app-bar-title>ShoutOut</v-app-bar-title>
+    </v-btn>
+
+    <!-- Navigation Buttons -->
     <v-spacer />
+    <v-btn text :to="{ path: '/birthdays' }">Birthdays</v-btn>
+    <v-btn text :to="{ path: '/workAnniversary' }">Work Anniversary</v-btn>
+    <v-btn text :to="{ path: '/peer2peerAppreciation' }">Peer-to-Peer Appreciation</v-btn>
+    <v-btn text :to="{ path: '/teamAchievements' }">Team Achievements</v-btn>
+    <v-btn text :to="{ path: '/festivals' }">Festivals</v-btn>
+    <v-btn text :to="{ path: '/teamParties' }">Team Parties</v-btn>
+    <v-btn text :to="{ path: '/officialEvents' }">Official Events</v-btn>
+
+    <!-- Avatar and User Menu -->
     <v-menu>
       <template v-slot:activator="{ props }">
         <v-avatar color="secondary" v-bind="props" size="40">
@@ -25,7 +39,7 @@
       </v-list>
     </v-menu>
 
-    <!-- Avatar selection dialog -->
+    <!-- Avatar Selection Dialog -->
     <v-dialog v-model="avatarDialog" max-width="500px">
       <v-card>
         <v-card-title>Choose Your Avatar</v-card-title>
@@ -47,6 +61,8 @@
     </v-dialog>
   </v-app-bar>
 </template>
+
+
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';

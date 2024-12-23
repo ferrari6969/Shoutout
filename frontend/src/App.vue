@@ -6,7 +6,6 @@
     />
     <template v-else>
       <TopBar @logout="logout" />
-      <Sidebar />
       <v-main>
         <router-view />
       </v-main>
@@ -19,7 +18,6 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import LoginModal from './components/LoginModal.vue';
 import TopBar from './components/TopBar.vue';
-import Sidebar from './components/Sidebar.vue';
 
 const router = useRouter();
 const isLoggedIn = ref(false);

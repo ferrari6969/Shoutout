@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <v-btn color="primary" @click="showModal = true">Add Achievement</v-btn>
+        <v-btn color="primary" @click="addAchievement">Add Achievement</v-btn>
       </v-col>
     </v-row>
     <v-row>
@@ -56,36 +56,42 @@ export default {
     };
   },
   methods: {
-    async fetchAchievements() {
-      this.achievements = await TeamAchievementService.fetchAchievements();
-    },
-    async addAchievement() {
-      const { teamName, title, description } = this.form;
-      await TeamAchievementService.addAchievement(teamName, title, description, this.currentUser.userId);
-      this.showModal = false;
-      this.fetchAchievements();
-    },
-    async editAchievement(achievement) {
-      this.isEditMode = true;
-      this.form = { ...achievement };
-      this.showModal = true;
-    },
-    async saveAchievement() {
-      const { _id, teamName, title, description } = this.form;
-      if (this.isEditMode) {
-        await TeamAchievementService.editAchievement(_id, title, description);
-      } else {
-        await TeamAchievementService.addAchievement(teamName, title, description, this.currentUser.userId);
-      }
-      this.showModal = false;
-      this.fetchAchievements();
-      this.isEditMode = false;
-    },
-    async deleteAchievement(id) {
-      await TeamAchievementService.deleteAchievement(id);
-      this.fetchAchievements();
-    },
+  async fetchAchievements() {
+    this.achievements = await TeamAchievementService.fetchAchievements();
   },
+  addAchievement() {
+    // Reset the form and set isEditMode to false
+    this.isEditMode = false;
+    this.form = {
+      _id: "",
+      teamName: "",
+      title: "",
+      description: "",
+    };
+    this.showModal = true;
+  },
+  async editAchievement(achievement) {
+    this.isEditMode = true;
+    this.form = { ...achievement };
+    this.showModal = true;
+  },
+  async saveAchievement() {
+    const { _id, teamName, title, description } = this.form;
+    if (this.isEditMode) {
+      await TeamAchievementService.editAchievement(_id, title, description);
+    } else {
+      await TeamAchievementService.addAchievement(teamName, title, description, this.currentUser.userId);
+    }
+    this.showModal = false;
+    this.fetchAchievements();
+    this.isEditMode = false;
+  },
+  async deleteAchievement(id) {
+    await TeamAchievementService.deleteAchievement(id);
+    this.fetchAchievements();
+  },
+},
+
   created() {
     this.fetchAchievements();
   },
