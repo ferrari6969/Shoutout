@@ -1,32 +1,52 @@
 <template>
   <div class="dashboard">
-    <h1>Welcome to the ShoutOut</h1>
+    <div class="background-video">
+      <video autoplay loop muted>
+        <source src="..\assets\dashboard_bg.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <h1 class="welcome-title"> 🙌🎉 ShoutOut Wall 🎉🙌 </h1>
     <div class="tiles-container">
+      <!-- Birthday Tile -->
       <div class="tile birthday" @click="navigateTo('/birthdays')">
-        <h2>Birthday Celebrations</h2>
+        <h1> 🎂 </h1>
+        <h2>Birthday Celebrations </h2>
         <p>Celebrate your colleagues' special day!</p>
       </div>
+      <!-- Work Anniversary Tile -->
       <div class="tile work-anniversary" @click="navigateTo('/workAnniversary')">
-        <h2>Work Anniversaries</h2>
+        <h1> 💼 </h1>
+        <h2>Work Anniversaries </h2>
         <p>Mark and celebrate milestones together!</p>
       </div>
+      <!-- Peer Appreciation Tile -->
       <div class="tile peer-appreciation" @click="navigateTo('/peer2peerAppreciation')">
-        <h2>Peer-to-Peer Appreciation</h2>
+        <h1> 🤝 </h1>
+        <h2>Peer-2-Peer Appreciation</h2>
         <p>Express gratitude and uplift the team spirit!</p>
       </div>
+      <!-- Team Achievements Tile -->
       <div class="tile team-achievements" @click="navigateTo('/teamAchievements')">
+        <h1> 👯‍♂️👯‍♀️ </h1>
         <h2>Team Achievements</h2>
         <p>Celebrate success and inspire more!</p>
       </div>
+      <!-- Festivals Tile -->
       <div class="tile festivals" @click="navigateTo('/festivals')">
+        <h1> 🪔 </h1>
         <h2>Festivals</h2>
         <p>Embrace cultural diversity and joy.</p>
       </div>
+      <!-- Team Parties Tile -->
       <div class="tile team-parties" @click="navigateTo('/teamParties')">
+        <h1> 🥂 </h1>
         <h2>Team Parties</h2>
         <p>Unwind and have fun together.</p>
       </div>
+      <!-- Official Events Tile -->
       <div class="tile official-events" @click="navigateTo('/officialEvents')">
+        <h1> 🏆 </h1>
         <h2>Official Events</h2>
         <p>Stay connected with organizational events.</p>
       </div>
@@ -48,6 +68,34 @@ export default {
 <style scoped>
 .dashboard {
   padding: 20px;
+  position: relative; 
+  z-index: 1;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  z-index: -1; 
+}
+
+.background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5); 
+  z-index: -1; 
+}
+
+.welcome-title {
+  font-size: 3rem; /* Adjust font size as needed */
+  color:rgb(245, 238, 238);
+  margin-bottom: 30px; /* Spacing between the title and tiles */
   text-align: center;
 }
 
@@ -61,7 +109,8 @@ h1 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  justify-content: center;
+  justify-items: center; /* Ensures tiles are centered within each grid cell */
+  justify-content: center; /* Ensure tiles are centered in the container */
 }
 
 .tile {
@@ -69,9 +118,9 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 250px; 
+  height: 250px; /* Fixed height for all tiles */
   width: 100%; 
-  max-width: 300px;
+  max-width: 500px;
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -92,7 +141,7 @@ h1 {
   font-size: 1.5rem;
   color: #222;
   margin-bottom: 10px;
-  height: 2rem; 
+  height: 2rem; /* Consistent height for titles */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -101,7 +150,7 @@ h1 {
 .tile p {
   font-size: 1rem;
   color: #666;
-  height: 3rem; 
+  height: 3rem; /* Consistent height for descriptions */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -125,31 +174,31 @@ h1 {
 }
 
 .birthday {
-  background: linear-gradient(135deg, #ffeb3b, #ff9800);
+  background: linear-gradient(135deg, #a7c7f3, #81d4fa );
 }
 
 .work-anniversary {
-  background: linear-gradient(135deg, #2196f3, #03a9f4);
+  background: linear-gradient(135deg, #a8e6a0, #c8e6c9);
 }
 
 .peer-appreciation {
-  background: linear-gradient(135deg, #4caf50, #8bc34a);
+  background: linear-gradient(135deg,#80D8D8, #AEE8F8);
 }
 
 .team-achievements {
-  background: linear-gradient(135deg, #9c27b0, #e91e63);
+  background: linear-gradient(135deg, #d1a0d5, #f0a1c5 );
 }
 
 .festivals {
-  background: linear-gradient(135deg, #ffc107, #ff5722);
+  background: linear-gradient(135deg, #f9e79f, #f7c17d);
 }
 
 .team-parties {
-  background: linear-gradient(135deg, #673ab7, #3f51b5);
+  background: linear-gradient(135deg, #c1a1e3, #b2a7d7 );
 }
 
 .official-events {
-  background: linear-gradient(135deg, #607d8b, #9e9e9e);
+  background: linear-gradient(135deg, #b0c4cc, #d1d8e0);
 }
 
 @media (max-width: 1200px) {

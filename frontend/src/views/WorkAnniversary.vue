@@ -1,42 +1,90 @@
 <template>
   <div class="post-component">
-    <h1>🎉 Work Anniversaries 🎉</h1>
-    <p>Welcome to the Work Anniversaries page!</p>
-    <div v-if="anniversaries.length" class="anniversary-list">
-      <div 
-        v-for="anniversary in anniversaries" 
-        :key="anniversary.annId" 
-        class="anniversary-card"
-      >
-        <h2>{{ anniversary.name }}</h2>
-        <p>Date of Joining: {{ new Date(anniversary.dateOfJoining).toLocaleDateString() }}</p>
-
-        <div v-for="comment in anniversary.comments" :key="comment.commentId" class="comment">
-          <strong>{{ comment.author || "Anonymous" }}:</strong> {{ comment.content }}
-          <span 
-            v-if="comment.userId === currentUserId" 
-            @click="editComment(anniversary.annId, comment)" 
-            class="edit-btn"
-          >
-            ✏️
-          </span>
-        </div>
-
-        <form @submit.prevent="addComment(anniversary.annId)" class="add-comment">
-          <input 
-            v-model="newComment[anniversary.annId]" 
-            type="text" 
-            placeholder="Add a comment..."
-          />
-          <button type="submit">Post</button>
-        </form>
-      </div>
+    <!-- Background Video -->
+    <div class="background-video">
+      <video autoplay loop muted>
+        <source src="../assets/work_anniversary.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
     </div>
 
-    <p v-else-if="loading">Loading work anniversaries...</p>
-    <p v-else-if="error">{{ error }}</p>
+    <h1>🎉 Work Anniversaries 🎉</h1>
+    <p>Cheers to Another Year of Growth and Success!</p>
+
+    <!-- Today's Work Anniversaries -->
+    <section v-if="todaysAnniversaries.length">
+      <h2>Today's Work Anniversaries</h2>
+      <div class="anniversary-list">
+        <div 
+          v-for="anniversary in todaysAnniversaries" 
+          :key="anniversary.annId" 
+          class="anniversary-card"
+        >
+          <h2>{{ anniversary.name }}</h2>
+          <p>Date of Joining: {{ new Date(anniversary.dateOfJoining).toLocaleDateString() }}</p>
+
+          <div v-for="comment in anniversary.comments" :key="comment.commentId" class="comment">
+            <strong>{{ comment.author || "Anonymous" }}:</strong> {{ comment.content }}
+            <span 
+              v-if="comment.userId === currentUserId" 
+              @click="editComment(anniversary.annId, comment)" 
+              class="edit-btn"
+            >
+              ✏️
+            </span>
+          </div>
+
+          <form @submit.prevent="addComment(anniversary.annId)" class="add-comment">
+            <input 
+              v-model="newComment[anniversary.annId]" 
+              type="text" 
+              placeholder="Add a comment..."
+            />
+            <button type="submit">Post</button>
+          </form>
+        </div>
+      </div>
+    </section>
+    <p v-else>No work anniversaries today!</p>
+
+    <!-- Past Work Anniversaries -->
+    <section v-if="pastAnniversaries.length">
+      <h2>Past Work Anniversaries</h2>
+      <div class="anniversary-list">
+        <div 
+          v-for="anniversary in pastAnniversaries" 
+          :key="anniversary.annId" 
+          class="anniversary-card"
+        >
+          <h2>{{ anniversary.name }}</h2>
+          <p>Date of Joining: {{ new Date(anniversary.dateOfJoining).toLocaleDateString() }}</p>
+
+          <div v-for="comment in anniversary.comments" :key="comment.commentId" class="comment">
+            <strong>{{ comment.author || "Anonymous" }}:</strong> {{ comment.content }}
+            <span 
+              v-if="comment.userId === currentUserId" 
+              @click="editComment(anniversary.annId, comment)" 
+              class="edit-btn"
+            >
+              ✏️
+            </span>
+          </div>
+
+          <form @submit.prevent="addComment(anniversary.annId)" class="add-comment">
+            <input 
+              v-model="newComment[anniversary.annId]" 
+              type="text" 
+              placeholder="Add a comment..."
+            />
+            <button type="submit">Post</button>
+          </form>
+        </div>
+      </div>
+    </section>
+    <p v-else>No past work anniversaries!</p>
   </div>
 </template>
+
 
 <script>
 import WorkAnniversaryService from "../services/WorkAnniversaryService";
@@ -46,6 +94,8 @@ export default {
   data() {
     return {
       anniversaries: [],
+      todaysAnniversaries: [],
+      pastAnniversaries: [],
       newComment: {},
       currentUserId: JSON.parse(localStorage.getItem("userData"))?.user?.userId || null,
       currentUser: JSON.parse(localStorage.getItem("userData"))?.user?.name || null,
@@ -57,7 +107,22 @@ export default {
     async fetchAnniversaries() {
       try {
         this.loading = true;
-        this.anniversaries = await WorkAnniversaryService.fetchAnniversaries();
+        const allAnniversaries = await WorkAnniversaryService.fetchAnniversaries();
+        const today = new Date();
+        const todayStr = today.toISOString().split("T")[0]; // Format: YYYY-MM-DD
+
+        // Separate today's anniversaries and past anniversaries
+        this.todaysAnniversaries = allAnniversaries.filter(anniversary => {
+          const annDate = new Date(anniversary.dateOfJoining).toISOString().split("T")[0];
+          return annDate === todayStr;
+        });
+
+        this.pastAnniversaries = allAnniversaries.filter(anniversary => {
+          const annDate = new Date(anniversary.dateOfJoining).toISOString().split("T")[0];
+          return annDate < todayStr;
+        });
+
+        this.anniversaries = allAnniversaries; // Keep all anniversaries for reference
       } catch (err) {
         this.error = "Failed to load work anniversaries!";
         console.error(err);
@@ -103,10 +168,28 @@ export default {
 };
 </script>
 
+
 <style scoped>
 .post-component {
+  position: relative;
   text-align: center;
   padding: 20px;
+  z-index: 1; /* Ensure content is above the video */
+}
+
+.background-video {
+  position: fixed; /* Fix the video to the background */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full width of the viewport */
+  height: 100vh; /* Full height of the viewport */
+  z-index: -1; /* Ensure the video stays behind the content */
+}
+
+.background-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the video fills the viewport */
 }
 
 .anniversary-list {

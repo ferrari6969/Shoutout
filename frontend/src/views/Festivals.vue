@@ -7,8 +7,6 @@
       <h2>Today's Festival</h2>
       <div>
         <h3>{{ todayFestival.name }}</h3>
-        <p>{{ new Date(todayFestival.date).toLocaleDateString() }}</p>
-        <p>{{ todayFestival.videoId }}</p>
         <video controls :src="`/videos/${todayFestival.videoId}.mp4`"></video>
       </div>
     </section>
@@ -18,8 +16,7 @@
       <h2>Past Festivals</h2>
       <div v-for="festival in pastFestivals" :key="festival.festivalId" class="festival-post">
         <h3>{{ festival.name }}</h3>
-        <p>{{ new Date(festival.date).toLocaleDateString() }}</p>
-        <video controls :src="`/assets/videos/${festival.videoId}.mp4`"></video>
+        <video controls :src="`/videos/${festival.videoId}.mp4`"></video>
       </div>
       <button v-if="!loading && !endOfList" @click="fetchMoreFestivals">Load More</button>
     </section>
@@ -73,6 +70,13 @@ export default {
   text-align: center;
   padding: 20px;
 }
+
+video {
+  width: 80%; /* Set video width to 80% of the container */
+  display: block; /* Ensures margin auto works */
+  margin: 20px auto; /* Centers the video horizontally */
+}
+
 .festival-post {
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -80,3 +84,4 @@ export default {
   margin-bottom: 20px;
 }
 </style>
+

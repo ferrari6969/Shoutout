@@ -6,7 +6,7 @@ const FestivalShowcase = require('../models/festival');
 router.get('/today', async (req, res) => {
     try {
         const today = new Date();
-        today.setUTCHours(0, 0, 0, 0);
+        today.setHours(5, 30, 0, 0); 
         console.log(today)
         const todayFestival = await FestivalShowcase.findOne({ date: today });
         if (!todayFestival) return res.status(404).json({ message: 'No festival today!' });

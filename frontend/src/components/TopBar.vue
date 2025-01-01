@@ -1,8 +1,8 @@
 <template>
-  <v-app-bar color="primary" elevation="2">
+  <v-app-bar color="white" elevation="2">
     <!-- ShoutOut Title (Navigates to Dashboard) -->
     <v-btn text :to="{ path: '/Dashboard' }" class="shoutout-title-btn">
-      <v-app-bar-title>ShoutOut</v-app-bar-title>
+      <v-app-bar-title>Dashboard</v-app-bar-title>
     </v-btn>
 
     <!-- Navigation Buttons -->
